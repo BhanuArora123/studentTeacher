@@ -54,7 +54,7 @@ exports.login = (req,res,next) => {
     const email = req.body.email;
     const password = req.body.password;
     const accountType = req.body.accountType;
-    const userId,studentData;
+    let userId,studentData;
     let errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(422).json({

@@ -2,11 +2,19 @@ const express = require("express");
 
 const mongoose = require("mongoose");
 
+const cors = require("cors");
+
 const authRouter = require("./routes/auth");
 
 const favouriteRouter = require("./routes/favourite");
 
 const app = express();
+
+app.use(cors({
+    origin:"*"
+}))
+
+app.use(express.json());
 
 app.use(authRouter);
 

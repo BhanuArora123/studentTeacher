@@ -16,10 +16,6 @@ const studentSchema = new schema(
             type: String,
             required: true
         },
-        phone_number: {
-            type: Number,
-            required: true
-        },
         fav_teachers: [
             {
                 teacherId: {
