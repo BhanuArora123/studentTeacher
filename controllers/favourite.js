@@ -19,18 +19,22 @@ exports.addFavourite = (req,res,next) => {
         })
     })
     .then((teacher) => {
+        console.log(teacher);
         studentData.fav_teachers.push({
-            teacherId:teacher._id
+            teacherId:teacher._doc._id
         })
         studentData.save();
         teacher.students_liked.push({
             studId:studentData._id
         })
-        teacher.save();
+        return teacher.save();
     })
-    .then(() => {
+    .then((teacherData) => {
         return res.status(200).json({
-            msg:"teacher added to favourite successfully"
+            msg:"teacher added to favourite successfully",
+            teacherData:{
+                ...teacherData._doc,password:undefined
+            }
         });
     })
     .catch((err) => {
@@ -59,14 +63,23 @@ exports.mostFav = (req,res,next) => {
 }
 exports.removeTeacher = (req,res,next) => {
     let teacherId = req.params.teacherId;
+    console.log(teacherId);
     studentModel.findOne({
         email:req.email
     })
     .then((stud) => {
         let modifiedData = stud.fav_teachers.filter((teacher) => {
-            if(teacher._id.toString() != teacherId.toString()){
+            if(teacher.teacherId.toString() != teacherId.toString()){
                 return teacher;
             }
+        })
+        console.log(modifiedData)
+        stud.fav_teachers = modifiedData;
+        return stud.save();
+    })
+    .then(() => {
+        return res.status(200).json({
+            msg:"deleted"
         })
     })
 }
@@ -80,6 +93,19 @@ exports.getTeacher = (req,res,next) => {
         })
         return res.status(200).json({
             teacherData:teacherArray
+        })
+    })
+}
+exports.favTeacher = (req,res,next) => {
+    studentModel.findOne({
+        email:req.email
+    })
+    .populate("fav_teachers.teacherId","name email _id")
+    .then((userData) => {
+        return res.status(200).json({
+            userData:{
+                ...userData._doc,password:undefined
+            }
         })
     })
 }

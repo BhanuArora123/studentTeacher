@@ -16,7 +16,7 @@ try {
             return res.json();
         })
         .then((data) => {
-            location.href = "../login.html";
+            location.href = "/Frontend/login.html";
         })
       })
 } catch (error) {
