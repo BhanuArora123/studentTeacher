@@ -36,17 +36,17 @@ window.onload = () => {
         })
         .catch(err => console.log(err))
     // document.getElementById("favTeacher").innerHTML = fav;
-    // fetch("http://localhost:3000/mostFav",{
-    //     headers:{
-    //         "Authorization":`Bearer ${localStorage.getItem("jwtToken")}`
-    //     }
-    // })
-    // .then((res) => {
-    //     return res.json();
-    // })
-    // .then((data) => {
-    //     console.log(data);
-    // })
+    fetch("http://localhost:3000/mostFav",{
+        headers:{
+            "Authorization":`Bearer ${localStorage.getItem("jwtToken")}`
+        }
+    })
+    .then((res) => {
+        return res.json();
+    })
+    .then((data) => {
+        console.log(data);
+    })
     fetch("http://localhost:3000/getTeacher", {
         headers: {
             "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
