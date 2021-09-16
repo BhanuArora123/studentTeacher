@@ -2,8 +2,10 @@ const favouriteController = require("../controllers/favourite");
 const express = require("express");
 const router = express.Router();
 
-router.post("/addFav",favouriteController.addFavourite);
-router.get("/mostFav",favouriteController.mostFav);
-router.delete("/removeFav/:teacherId",favouriteController.removeTeacher);
+const isAuth = require("../utils/isAuth");
 
+router.post("/addFav",isAuth,favouriteController.addFavourite);
+router.get("/mostFav",isAuth,favouriteController.mostFav);
+router.delete("/removeFav/:teacherId",isAuth,favouriteController.removeTeacher);
+router.get("/getTeacher",isAuth,favouriteController.getTeacher)
 module.exports = router;

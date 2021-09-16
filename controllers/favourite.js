@@ -39,10 +39,8 @@ exports.addFavourite = (req,res,next) => {
 }
 exports.mostFav = (req,res,next) => {
     // using aggregations to find most favourite teacher
-    studentModel
-    .find()
-    .populate("fav_teacher.teacherId")
-    .aggregate({
+    teacherModel
+    .aggregate([{
         $expr:{
             $max:[
                 {
@@ -50,7 +48,7 @@ exports.mostFav = (req,res,next) => {
                 }
             ]
         }
-    })
+    }])
     .then((val) => {
         return res.status(200).json({
             fav_teacher:{
@@ -69,6 +67,19 @@ exports.removeTeacher = (req,res,next) => {
             if(teacher._id.toString() != teacherId.toString()){
                 return teacher;
             }
+        })
+    })
+}
+exports.getTeacher = (req,res,next) => {
+    teacherModel.find()
+    .then((arr) => {
+        let teacherArray = arr.map((teacher) => {
+            return {
+                ...teacher._doc,password:undefined
+            }
+        })
+        return res.status(200).json({
+            teacherData:teacherArray
         })
     })
 }

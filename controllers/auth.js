@@ -69,7 +69,7 @@ exports.login = (req,res,next) => {
         email:email
     })
     .then((stud) => {
-        if(stud){
+        if(!stud){
             return res.status(404).json({
                 msg:"student/teacher not found"
             })
@@ -91,10 +91,11 @@ exports.login = (req,res,next) => {
         return res.status(200).json({
             msg:"user authenticated successfully",
             userData:{
-                ...studentData,
+                ...studentData._doc,
                 password:undefined
             },
-            token:token
+            token:token,
+            status:200
         })
     })
     .catch((err) => {

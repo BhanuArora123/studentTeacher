@@ -1,10 +1,12 @@
 const jwt = require("jsonwebtoken");
 
 const isAuth = (req,res,next) => {
-    const jwtToken = req.headers("authorization").split(" ")[1];
+    const jwtToken = req.header("Authorization").split(" ")[1];
     console.log(jwtToken);
-    jwt.verify(jwtToken,"supersecretsentence")
-    .then((result) => {
+    jwt.verify(jwtToken,"supersecretsentence",(err,result) => {
+        if(err){
+            throw new Error("invalid token");
+        }
         if(!result){
             return res.status(401).json({
                 msg:"invalid token"
@@ -13,7 +15,6 @@ const isAuth = (req,res,next) => {
         req.email = result.email;
         req.userId = result.userId;
         next();
-    }).catch((err) => {
-        console.log(err);
-    });
+    })
 }
+module.exports = isAuth;
